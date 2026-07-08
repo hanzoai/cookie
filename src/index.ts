@@ -176,7 +176,7 @@ export function stringifyCookie(
     const value = enc(val);
 
     if (!cookieValueRegExp.test(value)) {
-      throw new TypeError(`cookie val is invalid: ${val}`);
+      throw new TypeError(`cookie value is invalid: ${val}`);
     }
 
     if (str) str += "; ";
