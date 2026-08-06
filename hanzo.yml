@@ -1,0 +1,17 @@
+# Canonical CI/CD config for hanzoai/cookie — read by the hanzoai/ci reusable
+# workflow (.hanzo/workflows/cicd.yml) and by platform.hanzo.ai.
+#
+# LIBRARY: HTTP cookie serialize/parse. No image, no deploy — it ships from a tag.
+#
+# `npm ci && npm test` is exactly what this repo's own CI runs, and `test` here
+# is two things, both of which belong in a merge gate:
+#   - `ts-scripts test` — the vitest suite: RFC 6265 parsing edge cases, the
+#     attribute serializer, and the encode/decode round trip. A cookie parser
+#     fails by accepting one byte too many, which only a test can see.
+#   - `npm run size` — size-limit against dist/index.js, capped at 1.4 KB.
+#     That is a real gate for a library this small: it is a dependency of
+#     effectively every Node HTTP stack, so a transitive dependency sneaking
+#     in shows up as bytes before it shows up as anything else.
+test:
+  - name: test
+    run: npm ci && npm test
